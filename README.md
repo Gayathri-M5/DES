@@ -1,5 +1,4 @@
-To run the code
-In the command window
+Code for Encryption and Decryption using DES as well as analysing the performance as you can see in the Report
 
 Encryption: 
 
