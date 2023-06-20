@@ -1,0 +1,247 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>subkey</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-04-08"><meta name="DC.source" content="subkey.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> K = subkey(key,index)
+
+keycheck = dec2hex(key);
+
+
+     key = dec2bin(key,64);
+[n m] = size(key);
+<span class="comment">%given 64 bit input</span>
+<span class="keyword">if</span> m&gt;56 <span class="comment">%leading zeros were cut off, fill up to 64 bits</span>
+
+
+
+<span class="comment">%permute and get rid of parity bits</span>
+KeyPermuteTo56=[57,49,41,33,25,17,9,1,58,50,42,34,26,18,10,2,59,51,43,35,27,19,11,3,60,52,44,36,63,55,47,39,31,23,15,7,62,54,46,38,30,22,14,6,61,53,45,37,29,21,13,5,28,20,12,4];
+key = key(KeyPermuteTo56);
+<span class="keyword">end</span>
+
+    [n m] = size(key);
+    <span class="comment">%for 56 bit input</span>
+<span class="keyword">if</span> m&lt;56  <span class="comment">%leading zeros were cut off, fill up to 56 bits for required input</span>
+    key = dec2bin(key,56);
+<span class="keyword">end</span>
+
+
+L = [key(1:28)];  <span class="comment">%split 56bit input in half</span>
+R = [key(29:56)];
+K = [L,R];
+
+<span class="keyword">for</span> i=1:index
+    <span class="keyword">if</span> (i==1)|(i==2)|(i==9)|(i==16)  <span class="comment">%shift left 1</span>
+
+    L = [L(2:28),L(1)];
+    R = [R(2:28),R(1)];
+    <span class="keyword">else</span>                             <span class="comment">%shift left 2</span>
+        L = [L(3:28),L(1:2)];
+        R = [R(3:28),R(1:2)];
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+K = [L,R];
+<span class="comment">%now need to compress and permutate</span>
+PermuteCompress =[14,17,11,24,1,5,3,28,15,6,21,10,23,19,12,4,26,8,16,7,27,20,13,2,41,52,31,37,47,55,30,40,51,45,33,48,44,49,39,56,34,53,46,42,50,36,29,32];
+
+K=K(PermuteCompress);
+
+<span class="comment">%code works up to here: need to find number of unique subkeys</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+K =
+
+    '111001110101010110001110100100100001111100000111'
+
+
+K =
+
+    '000001100011011111101011001111010001000101000110'
+
+
+K =
+
+    '111110110101110001110001100001001110000011100110'
+
+
+K =
+
+    '110011011110101111001000011001001010111011000101'
+
+
+K =
+
+    '000100101111011110011111101110101000010011011011'
+
+
+K =
+
+    '011111010001110101000011000011111101011100000011'
+
+
+K =
+
+    '011000111110100011101101000111100110010101100000'
+
+
+K =
+
+    '100110011110010110010110111010001100100101000100'
+
+
+K =
+
+    '110101110100111001001110010001111000100011111000'
+
+
+K =
+
+    '011010101111101110100000100000011011110101011001'
+
+
+K =
+
+    '100110001011110101101111001010111001011000110100'
+
+
+K =
+
+    '111000010110011001011011010110010100110110100110'
+
+
+K =
+
+    '011001011101111110100100000011000100100010011101'
+
+
+K =
+
+    '110100101011100111010011110000110111000011010101'
+
+
+K =
+
+    '001111011110011001110011101000111000001110101001'
+
+
+K =
+
+    '101011011111101100011100001101110110011000011010'
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function K = subkey(key,index)
+
+keycheck = dec2hex(key);
+
+
+     key = dec2bin(key,64);
+[n m] = size(key);
+%given 64 bit input
+if m>56 %leading zeros were cut off, fill up to 64 bits
+
+
+    
+%permute and get rid of parity bits
+KeyPermuteTo56=[57,49,41,33,25,17,9,1,58,50,42,34,26,18,10,2,59,51,43,35,27,19,11,3,60,52,44,36,63,55,47,39,31,23,15,7,62,54,46,38,30,22,14,6,61,53,45,37,29,21,13,5,28,20,12,4];
+key = key(KeyPermuteTo56);
+end
+
+    [n m] = size(key);   
+    %for 56 bit input
+if m<56  %leading zeros were cut off, fill up to 56 bits for required input
+    key = dec2bin(key,56);
+end
+
+
+L = [key(1:28)];  %split 56bit input in half
+R = [key(29:56)];
+K = [L,R];
+
+for i=1:index
+    if (i==1)|(i==2)|(i==9)|(i==16)  %shift left 1
+       
+    L = [L(2:28),L(1)]; 
+    R = [R(2:28),R(1)];
+    else                             %shift left 2
+        L = [L(3:28),L(1:2)];
+        R = [R(3:28),R(1:2)];
+    end
+end
+
+K = [L,R];
+%now need to compress and permutate
+PermuteCompress =[14,17,11,24,1,5,3,28,15,6,21,10,23,19,12,4,26,8,16,7,27,20,13,2,41,52,31,37,47,55,30,40,51,45,33,48,44,49,39,56,34,53,46,42,50,36,29,32];
+
+K=K(PermuteCompress);
+
+%code works up to here: need to find number of unique subkeys
+end
+##### SOURCE END #####
+--></body></html>
